@@ -1,0 +1,20 @@
+
+The aarch64 directory examples require both the kernel8.img file and
+the config.txt file in the root directory of the sd card (along with
+bootcode.bin and start.elf).
+
+Most if not all you will want a 3.3v uart solution like an ftdi
+breakout board.  RX to TX and TX to RX.  115200 8N1
+
+The bootloader from bootloader10 is included in this directory as
+bootloader.img along with the same config.txt file used in all the
+examples.  Copy bootloader.img to kernel8.img on the sd card.  It
+supports motorola s-record files being downloaded.  If using minicom
+use an ascii file transfer to download the notmain.srec file and then
+enter g to go (see the bootloader10 source if this doesnt make
+sense).
+
+I am not going to blink the LED on the pi3 as it is not directly
+connected to a GPIO pin, instead the blinker examples are goign to use
+the uart and toggle GPIO pin 21 that you can monitor with an LED (and
+resistor) of your own, or a voltmeter or scope.

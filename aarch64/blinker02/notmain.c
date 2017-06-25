@@ -1,4 +1,7 @@
 
+//-------------------------------------------------------------------
+//-------------------------------------------------------------------
+
 // 2  outer corner
 // 4
 // 6
@@ -16,6 +19,13 @@ extern void uart_send ( unsigned int );
 #define GPFSEL2 0x3F200008
 #define GPSET0  0x3F20001C
 #define GPCLR0  0x3F200028
+
+#define SYSTIMERCLO 0x3F003004
+
+//0x01000000 17 seconds
+//0x00400000 4 seconds
+//#define TIMER_BIT 0x01000000
+#define TIMER_BIT 0x00400000
 
 int notmain ( void )
 {
@@ -35,15 +45,22 @@ int notmain ( void )
         {
             PUT32(GPSET0,1<<21);
             uart_send(0x55);
-            for(ra=0;ra<0x100000;ra++) dummy(ra);
+            while(1)
+            {
+                ra=GET32(SYSTIMERCLO);
+                if((ra&=TIMER_BIT)==TIMER_BIT) break;
+            }
             PUT32(GPCLR0,1<<21);
             uart_send(0x56);
-            for(ra=0;ra<0x100000;ra++) dummy(ra);
+            while(1)
+            {
+                ra=GET32(SYSTIMERCLO);
+                if((ra&=TIMER_BIT)==0) break;
+            }
         }
         uart_send(0x0D);
         uart_send(0x0A);
     }
-
     return(0);
 }
 
