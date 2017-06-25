@@ -1,0 +1,71 @@
+
+See the top level README file for more information on documentation
+and how to run these programs.
+
+sorting out the rest of the cores.
+
+skip:
+    mrs x0,mpidr_el1
+    mov x1,#0xC1000000
+    bic x1,x0,x1
+    cbz x1,zero
+not_zero:
+    mov x2,#0x6000
+    str w0,[x2]
+    wfi
+    b not_zero
+zero:
+
+One of them is 0x80000003
+
+skip:
+    mrs x0,mpidr_el1
+    mov x1,#0xC1000000
+    bic x1,x0,x1
+    cbz x1,zero
+
+    mov x3,#3
+    and x3,x0,x3
+    add x3,x3,x3
+    add x3,x3,x3
+    mov x2,#0x6000
+    str w0,[x2,x3]
+not_zero:
+    wfi
+    b not_zero
+zero:
+
+00006004 80000001
+00006008 80000002
+0000600C 80000003
+
+.globl mpidr
+mpidr:
+    mrs x0,mpidr_el1
+    ret
+
+.globl getel
+getel:
+    mrs x0, CurrentEL
+    ret
+
+
+80000000
+0000000C
+
+So the mpidr for the four cores
+0x80000000
+0x80000001
+0x80000002
+0x80000003
+
+
+and we are executing at EL3.
+
+
+
+
+
+
+
+
