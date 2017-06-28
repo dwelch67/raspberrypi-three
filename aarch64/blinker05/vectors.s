@@ -172,7 +172,6 @@ _start:
     b irq_handler
 
 skip:
-    mov sp,#0x80000
     // isolate core 0
     mrs x0,mpidr_el1
     mov x1,#0xC1000000
@@ -180,8 +179,7 @@ skip:
     cbz x1,zero
 not_zero:
     wfi
-    mov x0,#0x35
-    bl uart_send
+    //msr daifset,#2
     b not_zero
 zero:
 
