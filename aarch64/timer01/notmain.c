@@ -6,7 +6,7 @@
 // 10 RX in
 
 extern unsigned int GET32 ( unsigned int );
-
+extern void PUT32 ( unsigned int, unsigned int );
 extern void uart_init ( void );
 extern void hexstring ( unsigned int );
 extern void hexstrings ( unsigned int );
@@ -20,6 +20,14 @@ int notmain ( void )
     unsigned int ra,rb;
     uart_init();
     hexstring(0x12345678);
+
+
+    //set to 0x06AAAAAB for us giving almost the same as the system timer
+    //gives 19.2Mhz.
+    //PUT32(0x40000008,0x80000000);
+    //reduces but doesnt completely cover the gap to the system timer
+    PUT32(0x40000008,0x06AAABC9);
+
     while(1)
     {
         ra=GET32(SYSTIMERCLO);
