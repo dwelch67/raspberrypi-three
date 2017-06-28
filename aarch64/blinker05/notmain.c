@@ -6,10 +6,11 @@ extern void PUT32 ( unsigned int, unsigned int );
 extern unsigned int GET32 ( unsigned int );
 extern void dummy ( unsigned int );
 extern void enable_irq ( void );
-extern void enable_fiq ( void );
+extern void DOWFI ( void );
 
 extern void uart_init ( void );
 extern void uart_send ( unsigned int );
+extern void hexstring ( unsigned int );
 
 #define GPFSEL2 0x3F200008
 #define GPSET0  0x3F20001C
@@ -50,11 +51,13 @@ void c_irq_handler ( void )
     icount++;
     if(icount&1)
     {
-        PUT32(GPSET1,1<<(47-32));
+        PUT32(GPSET0,1<<21);
+        uart_send(0x55);
     }
     else
     {
-        PUT32(GPCLR1,1<<(47-32));
+        PUT32(GPCLR0,1<<21);
+        uart_send(0x56);
     }
     PUT32(ARM_TIMER_CLI,0);
 }
@@ -71,7 +74,8 @@ int notmain ( void )
     PUT32(GPFSEL2,ra);
 
     uart_init();
-
+if(1)
+{
     PUT32(ARM_TIMER_CTL,0x003E0000);
     PUT32(ARM_TIMER_LOD,1000000-1);
     PUT32(ARM_TIMER_RLD,1000000-1);
@@ -91,7 +95,11 @@ int notmain ( void )
         while(1) if(GET32(ARM_TIMER_MIS)) break;
         PUT32(ARM_TIMER_CLI,0);
     }
-
+    uart_send(0x0D);
+    uart_send(0x0A);
+}
+if(1)
+{
     PUT32(ARM_TIMER_CTL,0x003E0000);
     PUT32(ARM_TIMER_LOD,2000000-1);
     PUT32(ARM_TIMER_RLD,2000000-1);
@@ -110,19 +118,25 @@ int notmain ( void )
         while(1) if(GET32(IRQ_BASIC)&1) break;
         PUT32(ARM_TIMER_CLI,0);
     }
+    PUT32(IRQ_ENABLE_BASIC,0);
+    uart_send(0x0D);
+    uart_send(0x0A);
+}
+    PUT32(ARM_TIMER_CTL,0x003E0000);
+    PUT32(ARM_TIMER_LOD,500000-1);
+    PUT32(ARM_TIMER_RLD,500000-1);
+    PUT32(ARM_TIMER_CLI,0);
+    PUT32(IRQ_ENABLE_BASIC,1);
+    icount=0;
+    enable_irq();
+    PUT32(ARM_TIMER_CTL,0x003E00A2);
+    PUT32(ARM_TIMER_CLI,0);
 
-
-    //PUT32(ARM_TIMER_CTL,0x003E0000);
-    //PUT32(ARM_TIMER_LOD,500000-1);
-    //PUT32(ARM_TIMER_RLD,500000-1);
-    //PUT32(ARM_TIMER_CLI,0);
-    //icount=0;
-    //enable_irq();
-    //PUT32(ARM_TIMER_CTL,0x003E00A2);
-    //PUT32(ARM_TIMER_CLI,0);
-
-    
-    while(1) continue;
+    while(1)
+    {
+        DOWFI();
+        uart_send(0x33);
+    }
     return(0);
 }
 //-------------------------------------------------------------------

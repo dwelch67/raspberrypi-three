@@ -1,1 +1,29 @@
 
+Interrupt based, you know how I feel about interrupts (only if
+necessary which a blinker is not but for demonstration purposes).
+
+This barely works, have to hold your mouth just right, there is so
+much detail in the way exceptions are handled and the execution states
+and levels, that something more generic requires a LOT more work.
+
+We start at EL3 and since at the top cannot elevate to a higher level
+so stay at EL3.
+
+The GICC is basically disabled by pulling a GICCDISABLE line high
+on the edge of the core, this is good makes the IRQ/FIQ outside
+the core and feeding the core just like prior raspi chips.
+
+Messing with the uart like this in the irq is very dangerous, and should
+not be done I only do it because I know in this code the foreground
+and irq will never collide with respect to the uart.  (the interrupt
+wont interrupt a uart_send()).
+
+unanswered questions
+
+mrs x0,esr_el3
+4B010480
+does not make sense
+
+How do you get out of a wfi/wfe?
+Shouldnt the interrupt do that?
+
