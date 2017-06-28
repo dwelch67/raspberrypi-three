@@ -18,3 +18,8 @@ I am not going to blink the LED on the pi3 as it is not directly
 connected to a GPIO pin, instead the blinker examples are goign to use
 the uart and toggle GPIO pin 21 that you can monitor with an LED (and
 resistor) of your own, or a voltmeter or scope.
+
+
+
+MIDR shows 0x410FD034 so this is a r0p4 device (use the correct/matching
+documentation)

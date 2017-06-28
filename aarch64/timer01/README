@@ -1,0 +1,5 @@
+
+I find this very interesting the system timer which I assume is
+250MHz/256, on my board is very slightly faster than a timer in the ARM.
+Both are at this 977Mhz rate, but one is for me roughly 2-3 counts
+per second faster (less than a percent).
