@@ -13,20 +13,7 @@ _start:
     b hang
     b hang
 
-//in case we get interferece with the loader leaving options for linux
-//.space 0x1000-0x0020,0
-
 skip:
-    // isolate core 0
-    mrs x0,mpidr_el1
-    mov x1,#0xC1000000
-    bic x1,x0,x1
-    cbz x1,zero
-not_zero:
-    wfi
-    b not_zero
-zero:
-
     mov sp,#0x08000000
     bl notmain
 hang: b hang
