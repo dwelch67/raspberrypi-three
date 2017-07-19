@@ -22,153 +22,20 @@ _start:
     b hang
     b hang
 
+
+.balign 0x80
     b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
+    
+.balign 0x80
     b hang
 
+.balign 0x80    
     b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
+    
+.balign 0x80
     b hang
 
-    b hang //irq_handler
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-
+.balign 0x80
     b irq_handler
 
 skip:
