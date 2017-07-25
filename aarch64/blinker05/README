@@ -1,17 +1,10 @@
 
-this currently does not work.
-
-
-
 Interrupt based, you know how I feel about interrupts (only if
 necessary which a blinker is not but for demonstration purposes).
 
-This barely works, have to hold your mouth just right, there is so
-much detail in the way exceptions are handled and the execution states
-and levels, that something more generic requires a LOT more work.
-
-We start at EL3 and since at the top cannot elevate to a higher level
-so stay at EL3.
+Booting without a config.txt means we land in EL2 as of this writing,
+but EL1 is intended for the OS level and EL0 for the application so
+we go down to EL1 to make life easier.
 
 The GICC is basically disabled by pulling a GICCDISABLE line high
 on the edge of the core, this is good makes the IRQ/FIQ outside
@@ -24,10 +17,6 @@ wont interrupt a uart_send()).
 
 unanswered questions
 
-mrs x0,esr_el3
-4B010480
-does not make sense
-
 How do you get out of a wfi/wfe?
 Shouldnt the interrupt do that?
-
+There is a control register apparently, more reading...

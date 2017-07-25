@@ -2,6 +2,7 @@
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
 
+
 .globl _start
 _start:
     b skip
@@ -22,160 +23,48 @@ _start:
     b hang
     b hang
 
+
+.balign 0x80
     b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
+    
+.balign 0x80
     b hang
 
+.balign 0x80    
     b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
+    
+.balign 0x80
     b hang
 
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-    b hang
-
+.balign 0x80
     b irq_handler
 
-
-
-
-
 skip:
+
+    //set EL1 to aarch64
+    mov x1,#0x80000000
+	msr	hcr_el2,x1
+
+    //disable traps
+    //before 00C50838
+    //Just set the res1 bits
+    ldr x0,=0x00C00800
+	msr	sctlr_el1,x0
+    //after 0x00C00800
+
+	mov	x0,#0x3c5  
+	msr	spsr_el2,x0
+    //ldr x0,=enter_el1
+	adr	x0,enter_el1
+	msr	elr_el2, x0
+	eret
+enter_el1:
+
+  	//mov x0,#0x80000
+    ldr x0,=_start
+   	msr vbar_el1,x0
+
+
     mov sp,#0x08000000
     bl notmain
 hang: b hang
@@ -192,8 +81,12 @@ GET32:
 
 .globl enable_irq
 enable_irq:
-    ldr x1,=0x00080000
-    msr vbar_el2,x1
+
+    ldr x0,=_start
+   	msr vbar_el1,x0
+
+    //ldr x1,=0x00080000
+    //msr vbar_el2,x1
     //msr vbar_el3,x1
     //route to EL3
     //mrs x0,scr_el3
@@ -219,7 +112,7 @@ irq_handler:
     stp x16,x17,[sp,#-16]!
     stp x18,x19,[sp,#-16]!
 
-    //mrs x0,esr_el3
+    //mrs x0,esr_el1 //0x60000000 not reporting EC
     bl c_irq_handler
 
     ldp x18,x19,[sp],#16

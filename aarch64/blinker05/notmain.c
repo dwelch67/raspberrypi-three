@@ -13,8 +13,6 @@ extern void uart_send ( unsigned int );
 extern void hexstring ( unsigned int );
 
 
-unsigned int read_scr_el3 ( void );
-
 #define GPFSEL2 0x3F200008
 #define GPSET0  0x3F20001C
 #define GPCLR0  0x3F200028
@@ -49,6 +47,7 @@ unsigned int read_scr_el3 ( void );
 volatile unsigned int icount;
 
 //-------------------------------------------------------------------
+// THIS IS AN INTERRUPT HANDLER DONT MESS AROUND
 void c_irq_handler ( void )
 {
     icount++;
@@ -101,7 +100,7 @@ if(1)
     uart_send(0x0D);
     uart_send(0x0A);
 }
-if(0)
+if(1)
 {
     PUT32(ARM_TIMER_CTL,0x003E0000);
     PUT32(ARM_TIMER_LOD,2000000-1);
@@ -133,7 +132,7 @@ if(0)
     PUT32(IRQ_ENABLE_BASIC,1);
     icount=0;
     enable_irq();
-hexstring(1);
+    //hexstring(1); //did I hang in the above function?
     PUT32(ARM_TIMER_CTL,0x003E00A2);
     PUT32(ARM_TIMER_CLI,0);
 
