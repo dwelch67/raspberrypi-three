@@ -4,7 +4,7 @@ ARMGNU ?= aarch64-none-elf
 AOPS = --warn --fatal-warnings
 COPS = -Wall -O2 -nostdlib -nostartfiles -ffreestanding 
 
-gcc : kernel7.img
+gcc : kernel8.img
 
 all : gcc
 
@@ -25,7 +25,7 @@ notmain.o : notmain.c
 periph.o : periph.c 
 	$(ARMGNU)-gcc $(COPS) -c periph.c -o periph.o
 
-kernel7.img : loader vectors.o periph.o notmain.o 
+kernel8.img : loader vectors.o periph.o notmain.o 
 	$(ARMGNU)-ld vectors.o periph.o notmain.o -T loader -o notmain.elf
 	$(ARMGNU)-objdump -D notmain.elf > notmain.list
 	#$(ARMGNU)-objcopy --srec-forceS3 notmain.elf -O srec notmain.srec
