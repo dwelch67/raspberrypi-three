@@ -1,0 +1,22 @@
+
+Interrupt based, you know how I feel about interrupts (only if
+necessary which a blinker is not but for demonstration purposes).
+
+Booting without a config.txt means we land in EL2 as of this writing,
+but EL1 is intended for the OS level and EL0 for the application so
+we go down to EL1 to make life easier.
+
+The GICC is basically disabled by pulling a GICCDISABLE line high
+on the edge of the core, this is good makes the IRQ/FIQ outside
+the core and feeding the core just like prior raspi chips.
+
+Messing with the uart like this in the irq is very dangerous, and should
+not be done I only do it because I know in this code the foreground
+and irq will never collide with respect to the uart.  (the interrupt
+wont interrupt a uart_send()).
+
+unanswered questions
+
+How do you get out of a wfi/wfe?
+Shouldnt the interrupt do that?
+There is a control register apparently, more reading...
